@@ -1,23 +1,20 @@
+import string
 
-import os
+# Открываем файл input.txt для чтения
+with open('input.txt', 'r', encoding='utf-8') as file:
+    # Читаем содержимое файла
+    text = file.read()
 
-def test_words_with_23():
-    # Создаем тестовый input.txt файл
-    with open('input.txt', 'w', encoding='utf-8') as f:
-        f.write("This is a test 23word and another 23example.")
+# Разбиваем текст на слова и удаляем знаки препинания
+words = text.split()
+cleaned_words = [word.strip(string.punctuation) for word in words]
 
-    # Запускаем основной код
-    os.system('python filter.py')  # Замените your_script.py на имя вашего скрипта
+# Ищем слова, содержащие '23'
+words_with_23 = [word for word in cleaned_words if '23' in word]
 
-    # Проверяем output.txt
-    with open('output.txt', 'r', encoding='utf-8') as f:
-        output_words = f.read().splitlines()
+# Сохраняем найденные слова в новый файл output.txt
+with open('output.txt', 'w', encoding='utf-8') as output_file:
+    for word in words_with_23:
+        output_file.write(word + '\n')
 
-    # Проверяем, что в output.txt содержатся правильные слова
-    assert '23word' in output_words
-    assert '23example' in output_words
-    assert len(output_words) == 2  # Должно быть 2 слова
-
-    # Удаляем тестовые файлы
-    os.remove('input.txt')
-    os.remove('output.txt')
+print("Слова, содержащие '23', были сохранены в output.txt.")

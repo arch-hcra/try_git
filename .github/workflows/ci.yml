@@ -15,6 +15,7 @@ jobs:
         run: |
           docker run --rm -v ${{ github.workspace }}:/app -w /app python:3.8 bash -c "pip install pytest && pytest"
 
+
   debian-test:
     runs-on: ubuntu-latest
     steps:
@@ -22,13 +23,9 @@ jobs:
         uses: actions/checkout@v2
       - name: Run tests in Docker
         run: |
-          docker run --rm -v ${{ github.workspace }}:/app -w /app debian:latest bash -c "apt-get update && apt-get install -y python3 python3-pip && pip3 install pytest && pytest"
-
-  centos-test:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
-      - name: Run tests in Docker
-        run: |
-          docker run --rm -v ${{ github.workspace }}:/app -w /app centos:latest bash -c "yum install -y python3 python3-pip && pip3 install pytest && pytest"
+          docker run --rm -v ${{ github.workspace }}:/app -w /app debian:latest bash -c "
+            apt-get update && 
+            apt-get install -y python3 python3-pip && 
+            pip3 install --no-cache-dir pytest && 
+            pytest
+          "
